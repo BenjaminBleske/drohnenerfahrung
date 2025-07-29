@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Drohnen Experimente</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #f0f4f8;
+      color: #333;
+      margin: 0;
+      padding: 2rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2.5rem;
+      min-height: 100vh;
+    }
+    h1 {
+      color: #005f73;
+      margin-bottom: 1rem;
+    }
+    img, video {
+      max-width: 90vw;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+    video {
+      background: black;
+      max-height: 60vh;
+    }
+    .container {
+      text-align: center;
+      width: 100%;
+      max-width: 900px;
+    }
+    iframe {
+      width: 100%;
+      height: 500px;
+      border: 2px solid #005f73;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      margin-top: 2rem;
+    }
+    footer {
+      margin-top: auto;
+      font-size: 0.9rem;
+      color: #777;
+      text-align: center;
+      width: 100%;
+    }
+      .centered-img {
+  display: block;
+  margin: 0 auto;
+  max-width: 600px;
+  width: 100%;
+  height: auto;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Drohnen sind super, außer wenn sie abstürzen</h1>
+      
+    <section>
+      <h2>gebrochener Arm</h2>
+    <img src="IMG_1362.jpeg" alt="F1 Animation" class="centered-img" />
+    </section>
+      
+       <section>
+      <h2>Reparatur: gebrochener Arm - erfolgreich!</h2>
+      <img src="kaputt.gif" alt="Kaputt Animation" />
+    </section>
+      
+    <section>
+      <h2>Video vom Startflug nach Absturz mit gebrochenem Arm</h2>
+      <video controls>
+        <source src="IMG_1524.MOV" type="video/quicktime" />
+        Dein Browser unterstützt das Video-Tag nicht.
+      </video>
+    </section>
+    
+    <section>
+      <h2>Testflug erfolgreich; Präsentation einiger Bilder</h2>
+      <img src="FE.gif" alt="FE Animation" />
+    </section>
+    
+   
+
+    <section>
+      <h2>3D Viewer</h2>
+          <h3>Wenn man die Luftbilder verarbeitet, lassen sich 3D Modelle erstellen. Diese kann man dann im Web präsentieren, wie hier in dem iFrame.</h3>
+      <iframe src="https://benjaminbleske.github.io/3DViewer/" title="3D Viewer" loading="lazy"></iframe>
+    </section>
+  </div>
+
+  <footer>
+    &copy; 2025 Benjamin Bleske — Drohnen Experimente
+  </footer>
+</body>
+</html>
