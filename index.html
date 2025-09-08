@@ -35,6 +35,7 @@
       width: 100%;
       max-width: 900px;
     }
+    /* Bestehender iFrame-Style (für 3D Viewer) */
     iframe {
       width: 100%;
       height: 500px;
@@ -50,16 +51,39 @@
       text-align: center;
       width: 100%;
     }
-      .centered-img {
-  display: block;
-  margin: 0 auto;
-  max-width: 600px;
-  width: 100%;
-  height: auto;
-  border-radius: 10px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-}
+    .centered-img {
+      display: block;
+      margin: 0 auto;
+      max-width: 600px;
+      width: 100%;
+      height: auto;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
 
+    /* --- YT-Fallback spezifisch & responsiv (überschreibt den globalen iframe-Style NICHT) --- */
+    #ytFallback { display: none; }
+    .yt-embed {
+      position: relative;
+      width: 100%;
+      max-width: 900px;
+      aspect-ratio: 16 / 9;
+      margin-top: 1rem;
+    }
+    .yt-embed iframe {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      border: 2px solid #005f73;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+    .yt-note {
+      margin-top: 0.5rem;
+      color: #555;
+      font-size: 0.95rem;
+    }
   </style>
 </head>
 <body>
@@ -68,32 +92,43 @@
       
     <section>
       <h2>gebrochener Arm</h2>
-    <img src="IMG_1362.jpeg" alt="F1 Animation" class="centered-img" />
+      <img src="IMG_1362.jpeg" alt="Gebrochener Drohnenarm" class="centered-img" />
     </section>
       
-       <section>
+    <section>
       <h2>Reparatur: gebrochener Arm - erfolgreich!</h2>
-      <img src="kaputt.gif" alt="Kaputt Animation" />
+      <img src="kaputt.gif" alt="Reparatur-Animation" />
     </section>
       
     <section>
       <h2>Video vom Startflug nach Absturz mit gebrochenem Arm</h2>
-      <video controls>
+      <video id="startflug-video" controls playsinline preload="metadata">
         <source src="IMG_1524.MOV" type="video/quicktime" />
         Dein Browser unterstützt das Video-Tag nicht.
       </video>
+
+      <!-- YouTube-Fallback: wird per JS eingeblendet, wenn das lokale Video nicht lädt -->
+      <div id="ytFallback" class="yt-embed" aria-hidden="true">
+        <iframe
+          src="https://www.youtube.com/embed/Wap_8Q60jfs"
+          title="YouTube-Video – Startflug nach Absturz"
+          loading="lazy"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          referrerpolicy="strict-origin-when-cross-origin"
+          allowfullscreen
+        ></iframe>
+        <div class="yt-note">Fallback: Sollte das lokale Video nicht laden, kannst du es hier über YouTube ansehen.</div>
+      </div>
     </section>
     
     <section>
       <h2>Testflug erfolgreich; Präsentation einiger Bilder</h2>
-      <img src="FE.gif" alt="FE Animation" />
+      <img src="FE.gif" alt="Bilderserie Testflug" />
     </section>
-    
-   
 
     <section>
       <h2>3D Viewer</h2>
-          <h3>Wenn man die Luftbilder verarbeitet, lassen sich 3D Modelle erstellen. Diese kann man dann im Web präsentieren, wie hier in dem iFrame.</h3>
+      <h3>Wenn man die Luftbilder verarbeitet, lassen sich 3D Modelle erstellen. Diese kann man dann im Web präsentieren, wie hier in dem iFrame.</h3>
       <iframe src="https://benjaminbleske.github.io/3DViewer/" title="3D Viewer" loading="lazy"></iframe>
     </section>
   </div>
@@ -101,5 +136,41 @@
   <footer>
     &copy; 2025 Benjamin Bleske — Drohnen Experimente
   </footer>
+
+  <script>
+    // Fallback-Logik: Wenn das Video nicht lädt, YT-Embed anzeigen
+    (function () {
+      const video = document.getElementById('startflug-video');
+      const fallback = document.getElementById('ytFallback');
+
+      function showFallback() {
+        if (!fallback) return;
+        // Nur einmal ausführen
+        if (fallback.getAttribute('data-shown') === '1') return;
+        fallback.style.display = 'block';
+        fallback.setAttribute('aria-hidden', 'false');
+        fallback.setAttribute('data-shown', '1');
+      }
+
+      if (video) {
+        // Typische Fehler-/Abbruch-Events
+        ['error', 'stalled', 'abort', 'emptied'].forEach(ev =>
+          video.addEventListener(ev, showFallback, { once: true })
+        );
+
+        // Sicherheitsnetz: nach kurzer Zeit prüfen, ob Quelle verfügbar ist
+        // readyState < 2 => kaum/keine Daten; networkState === 3 => keine Quelle
+        setTimeout(() => {
+          try {
+            if (video.readyState < 2 || video.networkState === 3) {
+              showFallback();
+            }
+          } catch (e) {
+            showFallback();
+          }
+        }, 3500);
+      }
+    })();
+  </script>
 </body>
 </html>
